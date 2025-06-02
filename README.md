@@ -7,4 +7,4 @@ Right Arrow - Moves right.
 Space Bar - Resets the Game.
 Escape - Quits and closes game.
 
-clear && gcc ./src/main.c -lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_mixer -lSDL2_ttf -o ./build/bin && ./build/bin
+clear && gcc ./src/*.c -lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_mixer -lSDL2_ttf -o ./build/bin && ./build/bin

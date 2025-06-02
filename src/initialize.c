@@ -1,0 +1,26 @@
+#include "initialize.h"
+
+bool game_initialize(struct Game *g)
+{
+  if (SDL_Init(SDL_FLAGS))
+  {
+    fprintf(stderr, "Error initilizing SDL: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  g->window = SDL_CreateWindow(WIN_TITLE, WIN_X, WIN_Y, WIN_W, WIN_H, WINDOW_FLAGS);
+  if (!g->window)
+  {
+    fprintf(stderr, "Error creating SDL Window: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  g->renderer = SDL_CreateRenderer(g->window, -1, RENDER_FLAGS);
+  if (!g->renderer)
+  {
+    fprintf(stderr, "Error creating SDL Renderer: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+}
