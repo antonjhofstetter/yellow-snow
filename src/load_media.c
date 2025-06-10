@@ -15,6 +15,5 @@ bool game_load_media(struct Game *g)
     return EXIT_FAILURE;
   }
 
-  fprintf(stdout, "Yay!\n");
   return EXIT_SUCCESS;
 }

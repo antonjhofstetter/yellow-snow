@@ -22,5 +22,18 @@ bool game_initialize(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  SDL_Surface *icon = IMG_Load(WIN_ICON);
+  if (!icon)
+  {
+    fprintf(stderr, "Error loading window icon: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+  else
+  {
+    SDL_SetWindowIcon(g->window, icon);
+    SDL_FreeSurface(icon);
+    icon = NULL;
+  }
+
   return EXIT_SUCCESS;
 }
