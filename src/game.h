@@ -3,11 +3,13 @@
 
 #include "main.h"
 
-struct Game 
-{ 
+struct Game
+{
   SDL_Event event;
   SDL_Window *window;
-  SDL_Renderer *renderer; 
+  SDL_Renderer *renderer;
+  SDL_Texture *background_image;
+  SDL_Rect background_rect;
 };
 
 bool game_new(struct Game **game);

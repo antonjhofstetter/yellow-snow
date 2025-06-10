@@ -1,6 +1,7 @@
 TARGET			= yellow-snow
 BUILD_DIR		= .build
 SRC_DIR			?= src
+
 CC				= gcc
 CFLAGS_BASE		= -std=c99
 CFLAGS_RELEASE	= -O2
@@ -23,11 +24,11 @@ endif
 
 CFLAGS			= $(CFLAGS_BASE) $(CFLAGS_DEV)
 LDLIBS			= $(LDLIBS_BASE) $(LDLIBS_DEV)
-SRCS			= $(wildcard $(SRC_DIR)*.c)
+SRCS			= $(wildcard $(SRC_DIR)/*.c)
 OBJS			= $(addprefix $(BUILD_DIR)/, $(SRCS:.c=.o))
 
 $(BUILD_DIR):
-	mkdir $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)/src
 
 $(BUILD_DIR)/%.o: %.c %.h | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
