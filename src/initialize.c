@@ -15,6 +15,8 @@ bool game_initialize(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  // SDL_SetWindowIcon(g->window, icon);
+
   g->renderer = SDL_CreateRenderer(g->window, -1, RENDER_FLAGS);
   if (!g->renderer)
   {

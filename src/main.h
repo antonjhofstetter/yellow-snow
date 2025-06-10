@@ -24,4 +24,6 @@
 #define IMAGE_FLAGS IMG_INIT_PNG
 #define MIXER_FLAGS MIX_INIT_OGG
 
+int main(void);
+
 #endif
