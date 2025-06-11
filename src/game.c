@@ -29,7 +29,9 @@ bool game_new(struct Game **game)
     return EXIT_FAILURE;
   }
 
-  for (int i = 0; i < 1; i++)
+  player_reset(g->player);
+
+  for (int i = 0; i < 5; i++)
   {
     if (flake_new(&g->flakes, g->renderer, g->yellow_image))
     {
@@ -37,7 +39,7 @@ bool game_new(struct Game **game)
     }
   }
 
-  for (int i = 0; i < 19; i++)
+  for (int i = 0; i < 10; i++)
   {
     if (flake_new(&g->flakes, g->renderer, g->white_image))
     {
@@ -106,6 +108,7 @@ bool game_run(struct Game *g)
           break;
 
         case SDLK_SPACE:
+          player_reset(g->player);
           flakes_reset(g->flakes);
           break;
 
