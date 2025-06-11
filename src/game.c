@@ -84,8 +84,12 @@ void game_free(struct Game **game)
     g->window = NULL;
 
     TTF_Quit();
+
+    Mix_CloseAudio();
     Mix_Quit();
+
     IMG_Quit();
+
     SDL_Quit();
 
     free(g);
@@ -109,7 +113,7 @@ bool check_collision(struct Game *g)
       {
         if (flake_left(f) < right)
         {
-          if (handle_collision(g, f)) // returns true if yellow, false if white
+          if (handle_collision(g, f))
           {
             return true;
           }

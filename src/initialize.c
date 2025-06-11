@@ -24,7 +24,13 @@ bool game_initialize(struct Game *g)
     return EXIT_FAILURE;
   }
 
-  if (TTF_Init() == -1)
+  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048))
+  {
+    fprintf(stderr, "Error opening audio device: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  if (TTF_Init())
   {
     fprintf(stderr, "Error initializing SDL TTF: %s\n", SDL_GetError());
     return EXIT_FAILURE;
