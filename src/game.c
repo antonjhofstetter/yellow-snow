@@ -1,6 +1,7 @@
 #include "game.h"
 #include "initialize.h"
 #include "load_media.h"
+#include "player.h"
 
 bool game_new(struct Game **game)
 {
@@ -23,15 +24,24 @@ bool game_new(struct Game **game)
     return EXIT_FAILURE;
   }
 
+  if (player_new(&g->player, g->renderer, g->player_image))
+  {
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }
 
 void game_free(struct Game **game)
 {
-  struct Game *g = *game;
-
-  if (g)
+  if (*game)
   {
+    struct Game *g = *game;
+
+    player_free(&g->player);
+    SDL_DestroyTexture(g->player_image);
+    g->player_image = NULL;
+
     SDL_DestroyTexture(g->background_image);
     g->background_image = NULL;
 
@@ -73,8 +83,13 @@ bool game_run(struct Game *g)
       }
     }
 
+    player_update(g->player);
+
     SDL_RenderClear(g->renderer);
     SDL_RenderCopy(g->renderer, g->background_image, NULL, &g->background_rect);
+
+    player_draw(g->player);
+
     SDL_RenderPresent(g->renderer);
 
     SDL_Delay(16);

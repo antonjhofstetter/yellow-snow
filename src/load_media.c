@@ -15,5 +15,12 @@ bool game_load_media(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  g->player_image = IMG_LoadTexture(g->renderer, "assets/images/player.png");
+  if (!g->player_image)
+  {
+    fprintf(stderr, "Error loading Texture: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }
