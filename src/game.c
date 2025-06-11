@@ -51,6 +51,7 @@ void game_free(struct Game **game)
     SDL_DestroyWindow(g->window);
     g->window = NULL;
 
+    IMG_Quit();
     SDL_Quit();
 
     free(g);

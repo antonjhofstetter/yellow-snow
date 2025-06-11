@@ -4,9 +4,11 @@ bool game_initialize(struct Game *g)
 {
   if (SDL_Init(SDL_FLAGS))
   {
-    fprintf(stderr, "Error initilizing SDL: %s\n", SDL_GetError());
+    fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
     return EXIT_FAILURE;
   }
+
+  IMG_Init(IMAGE_FLAGS);
 
   g->window = SDL_CreateWindow(WIN_TITLE, WIN_X, WIN_Y, WIN_W, WIN_H, WINDOW_FLAGS);
   if (!g->window)
@@ -25,7 +27,7 @@ bool game_initialize(struct Game *g)
   SDL_Surface *icon = IMG_Load(WIN_ICON);
   if (!icon)
   {
-    fprintf(stderr, "Error loading window icon: %s\n", SDL_GetError());
+    fprintf(stderr, "Error loading icon Surface: %s\n", SDL_GetError());
     return EXIT_FAILURE;
   }
   else

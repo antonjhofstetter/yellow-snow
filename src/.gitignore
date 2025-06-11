@@ -1,0 +1,33 @@
+# Compiled files
+*.o
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+
+# Debug files
+*.pdb
+*.ilk
+*.log
+
+# IDE specific files
+.vscode/
+*.code-workspace
+.idea/
+*.vcxproj
+*.sln
+*.suo
+
+# Temporary files
+*~
+*.tmp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# SDL2 specific files (if applicable, adjust paths)
+SDL2.framework/
+SDL2.lib
+SDL2.dll
