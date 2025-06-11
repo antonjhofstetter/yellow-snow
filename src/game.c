@@ -109,7 +109,7 @@ bool check_collision(struct Game *g)
       {
         if (flake_left(f) < right)
         {
-          if (handle_collision(g, f))
+          if (handle_collision(g, f)) // returns true if yellow, false if white
           {
             return true;
           }
@@ -129,16 +129,13 @@ bool handle_collision(struct Game *g, struct Flake *f)
 
   if (f->is_white)
   {
-    //
-  }
-  else
-  {
-    //
+    printf("Yummy!\n");
+
+    flake_reset(f, false);
+    return EXIT_SUCCESS;
   }
 
-  flake_reset(f, false);
-
-  return EXIT_SUCCESS;
+  return EXIT_FAILURE;
 }
 
 bool game_run(struct Game *g)
@@ -180,7 +177,10 @@ bool game_run(struct Game *g)
 
     if (check_collision(g))
     {
-      return true;
+      printf("WTF! Eww!\n");
+      SDL_Delay(2000);
+      player_reset(g->player);
+      flakes_reset(g->flakes);
     }
 
     SDL_RenderClear(g->renderer);
