@@ -29,7 +29,23 @@ bool game_new(struct Game **game)
     return EXIT_FAILURE;
   }
 
-  flake_new(&g->flakes, g->renderer, g->yellow_image);
+  for (int i = 0; i < 1; i++)
+  {
+    if (flake_new(&g->flakes, g->renderer, g->yellow_image))
+    {
+      return EXIT_FAILURE;
+    }
+  }
+
+  for (int i = 0; i < 19; i++)
+  {
+    if (flake_new(&g->flakes, g->renderer, g->white_image))
+    {
+      return EXIT_FAILURE;
+    }
+  }
+
+  flakes_reset(g->flakes);
 
   return EXIT_SUCCESS;
 }

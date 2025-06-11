@@ -10,8 +10,8 @@ bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image)
   }
   new_flake->renderer = renderer;
   new_flake->image = image;
-  new_flake->rect.x = (rand() % WIN_W - 100) + 50;
-  new_flake->rect.y = -50;
+
+  flake_reset(new_flake, true);
 
   if (SDL_QueryTexture(new_flake->image, NULL, NULL, &new_flake->rect.w, &new_flake->rect.h))
   {
@@ -48,12 +48,11 @@ void flakes_update(struct Flake *f)
   {
     if (f->rect.y > WIN_H + 50)
     {
-      f->rect.x = (rand() % WIN_W - 25) + 25;
-      f->rect.y = -50;
+      flake_reset(f, false);
     }
     else
     {
-      f->rect.y += 2;
+      f->rect.y += 5;
     }
 
     f = f->next;
@@ -65,6 +64,23 @@ void flakes_draw(struct Flake *f)
   while (f)
   {
     SDL_RenderCopy(f->renderer, f->image, NULL, &f->rect);
+    f = f->next;
+  }
+}
+
+void flake_reset(struct Flake *f, bool full)
+{
+  int height = full ? WIN_H * 2 : WIN_H;
+  f->rect.y = -(rand() % height) - f->rect.h;
+
+  f->rect.x = rand() % WIN_W - f->rect.w;
+}
+
+void flakes_reset(struct Flake *f)
+{
+  while (f)
+  {
+    flake_reset(f, true);
     f = f->next;
   }
 }
