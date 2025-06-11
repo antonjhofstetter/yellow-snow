@@ -50,7 +50,7 @@ void player_update(struct Player *p)
 {
   if (p->keystate[SDL_SCANCODE_A])
   {
-    if (player_left(p) > 0)
+    if (player_left(p) >= 0)
     {
       p->rect.x -= p->speed;
     }
@@ -59,7 +59,7 @@ void player_update(struct Player *p)
 
   if (p->keystate[SDL_SCANCODE_D])
   {
-    if (player_right(p) < WIN_W)
+    if (player_right(p) <= WIN_W)
     {
       p->rect.x += p->speed;
     }
