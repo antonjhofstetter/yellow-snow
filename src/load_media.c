@@ -36,5 +36,19 @@ bool game_load_media(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  g->hit_sound = Mix_LoadWAV("assets/sounds/hit.ogg");
+  if (!g->hit_sound)
+  {
+    fprintf(stderr, "Error loading Chunk: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  g->collect_sound = Mix_LoadWAV("assets/sounds/collect.ogg");
+  if (!g->collect_sound)
+  {
+    fprintf(stderr, "Error loading Chunk: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }

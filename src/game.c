@@ -4,8 +4,9 @@
 #include "flakes.h"
 #include "player.h"
 
-bool check_collision(struct Game *g);
-bool handle_collision(struct Game *g, struct Flake *f);
+void check_collision(struct Game *g);
+void handle_collision(struct Game *g, struct Flake *f);
+void game_reset(struct Game *g);
 
 bool game_new(struct Game **game)
 {
@@ -51,7 +52,7 @@ bool game_new(struct Game **game)
     }
   }
 
-  flakes_reset(g->flakes);
+  game_reset(g);
 
   return EXIT_SUCCESS;
 }
@@ -64,6 +65,12 @@ void game_free(struct Game **game)
 
     flakes_free(&g->flakes);
     player_free(&g->player);
+
+    Mix_FreeChunk(g->hit_sound);
+    g->hit_sound = NULL;
+
+    Mix_FreeChunk(g->collect_sound);
+    g->collect_sound = NULL;
 
     SDL_DestroyTexture(g->white_image);
     g->white_image = NULL;
@@ -95,10 +102,12 @@ void game_free(struct Game **game)
     free(g);
     g = NULL;
     *game = NULL;
+
+    printf("all clean\n");
   }
 }
 
-bool check_collision(struct Game *g)
+void check_collision(struct Game *g)
 {
   struct Flake *f = g->flakes;
   int top = player_top(g->player);
@@ -113,33 +122,36 @@ bool check_collision(struct Game *g)
       {
         if (flake_left(f) < right)
         {
-          if (handle_collision(g, f))
-          {
-            return true;
-          }
+          handle_collision(g, f);
         }
       }
     }
 
     f = f->next;
   }
-
-  return false;
 }
 
-bool handle_collision(struct Game *g, struct Flake *f)
+void handle_collision(struct Game *g, struct Flake *f)
 {
   (void)g;
 
   if (f->is_white)
   {
-    printf("Yummy!\n");
-
+    Mix_PlayChannel(-1, g->collect_sound, 0);
     flake_reset(f, false);
-    return EXIT_SUCCESS;
   }
+  else
+  {
+    Mix_PlayChannel(-1, g->hit_sound, 0);
+    g->playing = false;
+  }
+}
 
-  return EXIT_FAILURE;
+void game_reset(struct Game *g)
+{
+  player_reset(g->player);
+  flakes_reset(g->flakes);
+  g->playing = true;
 }
 
 bool game_run(struct Game *g)
@@ -162,8 +174,10 @@ bool game_run(struct Game *g)
           break;
 
         case SDLK_SPACE:
-          player_reset(g->player);
-          flakes_reset(g->flakes);
+          if (!g->playing)
+          {
+            game_reset(g);
+          }
           break;
 
         default:
@@ -176,15 +190,11 @@ bool game_run(struct Game *g)
       }
     }
 
-    player_update(g->player);
-    flakes_update(g->flakes);
-
-    if (check_collision(g))
+    if (g->playing)
     {
-      printf("WTF! Eww!\n");
-      SDL_Delay(2000);
-      player_reset(g->player);
-      flakes_reset(g->flakes);
+      player_update(g->player);
+      flakes_update(g->flakes);
+      check_collision(g);
     }
 
     SDL_RenderClear(g->renderer);
