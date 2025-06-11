@@ -99,9 +99,18 @@ bool game_run(struct Game *g)
         break;
 
       case SDL_KEYDOWN:
-        if (g->event.key.keysym.sym == SDLK_ESCAPE)
+        switch (g->event.key.keysym.sym)
         {
+        case SDLK_ESCAPE:
           return EXIT_SUCCESS;
+          break;
+
+        case SDLK_r:
+          flakes_reset(g->flakes);
+          break;
+
+        default:
+          break;
         }
         break;
 
