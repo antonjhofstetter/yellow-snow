@@ -14,7 +14,7 @@ bool player_new(struct Player **player, SDL_Renderer *renderer, SDL_Texture *ima
   p->image = image;
   p->keystate = SDL_GetKeyboardState(NULL);
   p->speed = 5;
-  p->top_offset = 10;
+  p->top_offset = 20;
   p->left_offset = 45;
   p->right_offset = 45;
 

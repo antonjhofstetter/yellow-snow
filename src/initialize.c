@@ -2,7 +2,7 @@
 
 bool game_initialize(struct Game *g)
 {
-  // srand((unsigned)time(NULL));
+  srand((unsigned)time(NULL));
 
   if (SDL_Init(SDL_FLAGS))
   {
@@ -10,7 +10,25 @@ bool game_initialize(struct Game *g)
     return EXIT_FAILURE;
   }
 
-  IMG_Init(IMAGE_FLAGS);
+  int img_result = IMG_Init(IMAGE_FLAGS);
+  if ((img_result & IMAGE_FLAGS) != IMAGE_FLAGS)
+  {
+    fprintf(stderr, "Error initializing SDL Image: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  int mix_result = Mix_Init(MIXER_FLAGS);
+  if ((mix_result & MIXER_FLAGS) != MIXER_FLAGS)
+  {
+    fprintf(stderr, "Error initializing SDL Mixer: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  if (TTF_Init() == -1)
+  {
+    fprintf(stderr, "Error initializing SDL TTF: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
 
   g->window = SDL_CreateWindow(WIN_TITLE, WIN_X, WIN_Y, WIN_W, WIN_H, WINDOW_FLAGS);
   if (!g->window)

@@ -1,6 +1,6 @@
 #include "flakes.h"
 
-bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image)
+bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image, bool is_white)
 {
   struct Flake *new_flake = calloc(1, sizeof(struct Flake));
   if (!new_flake)
@@ -8,10 +8,12 @@ bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image)
     fprintf(stderr, "Error in calloc of new Flake.\n");
     return EXIT_FAILURE;
   }
+
   new_flake->renderer = renderer;
   new_flake->image = image;
   new_flake->speed = 5;
   new_flake->ground = 514;
+  new_flake->is_white = is_white;
 
   if (SDL_QueryTexture(new_flake->image, NULL, NULL, &new_flake->rect.w, &new_flake->rect.h))
   {

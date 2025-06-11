@@ -10,11 +10,11 @@ struct Flake
   SDL_Texture *image;
   SDL_Rect rect;
   int speed;
-  bool is_white;
   int ground;
+  bool is_white;
 };
 
-bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image);
+bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image, bool is_white);
 void flakes_free(struct Flake **flakes);
 void flakes_update(struct Flake *f);
 void flakes_draw(struct Flake *f);
