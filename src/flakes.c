@@ -10,8 +10,8 @@ bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image)
   }
   new_flake->renderer = renderer;
   new_flake->image = image;
-
-  flake_reset(new_flake, true);
+  new_flake->speed = 5;
+  new_flake->ground = 514;
 
   if (SDL_QueryTexture(new_flake->image, NULL, NULL, &new_flake->rect.w, &new_flake->rect.h))
   {
@@ -46,13 +46,13 @@ void flakes_update(struct Flake *f)
 {
   while (f)
   {
-    if (f->rect.y > WIN_H + 50)
+    if (f->rect.y > f->ground)
     {
       flake_reset(f, false);
     }
     else
     {
-      f->rect.y += 5;
+      f->rect.y += f->speed;
     }
 
     f = f->next;
@@ -68,14 +68,6 @@ void flakes_draw(struct Flake *f)
   }
 }
 
-void flake_reset(struct Flake *f, bool full)
-{
-  int height = full ? WIN_H * 2 : WIN_H;
-  f->rect.y = -(rand() % height) - f->rect.h;
-
-  f->rect.x = rand() % WIN_W - f->rect.w;
-}
-
 void flakes_reset(struct Flake *f)
 {
   while (f)
@@ -83,4 +75,26 @@ void flakes_reset(struct Flake *f)
     flake_reset(f, true);
     f = f->next;
   }
+}
+
+void flake_reset(struct Flake *f, bool full)
+{
+  int height = full ? WIN_H * 2 : WIN_H;
+  f->rect.y = -(rand() % height) - f->rect.h;
+  f->rect.x = rand() % WIN_W - f->rect.w;
+}
+
+int flake_left(struct Flake *f)
+{
+  return f->rect.x;
+}
+
+int flake_right(struct Flake *f)
+{
+  return f->rect.x + f->rect.w;
+}
+
+int flake_bottom(struct Flake *f)
+{
+  return f->rect.y + f->rect.h;
 }

@@ -105,7 +105,7 @@ bool game_run(struct Game *g)
           return EXIT_SUCCESS;
           break;
 
-        case SDLK_r:
+        case SDLK_SPACE:
           flakes_reset(g->flakes);
           break;
 
