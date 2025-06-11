@@ -29,6 +29,8 @@ bool game_new(struct Game **game)
     return EXIT_FAILURE;
   }
 
+  flake_new(&g->flakes, g->renderer, g->yellow_image);
+
   return EXIT_SUCCESS;
 }
 
@@ -38,7 +40,15 @@ void game_free(struct Game **game)
   {
     struct Game *g = *game;
 
+    flakes_free(&g->flakes);
     player_free(&g->player);
+
+    SDL_DestroyTexture(g->white_image);
+    g->white_image = NULL;
+
+    SDL_DestroyTexture(g->yellow_image);
+    g->yellow_image = NULL;
+
     SDL_DestroyTexture(g->player_image);
     g->player_image = NULL;
 
@@ -85,11 +95,13 @@ bool game_run(struct Game *g)
     }
 
     player_update(g->player);
+    flakes_update(g->flakes);
 
     SDL_RenderClear(g->renderer);
     SDL_RenderCopy(g->renderer, g->background_image, NULL, &g->background_rect);
 
     player_draw(g->player);
+    flakes_draw(g->flakes);
 
     SDL_RenderPresent(g->renderer);
 

@@ -2,6 +2,8 @@
 #define GAME_H
 
 #include "main.h"
+#include "player.h"
+#include "flakes.h"
 
 struct Game
 {
@@ -11,7 +13,11 @@ struct Game
   SDL_Texture *background_image;
   SDL_Rect background_rect;
   SDL_Texture *player_image;
+  SDL_Texture *yellow_image;
+  SDL_Texture *white_image;
+
   struct Player *player;
+  struct Flake *flakes;
 };
 
 bool game_new(struct Game **game);

@@ -2,6 +2,8 @@
 
 bool game_initialize(struct Game *g)
 {
+  // srand((unsigned)time(NULL));
+
   if (SDL_Init(SDL_FLAGS))
   {
     fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
