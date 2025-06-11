@@ -24,7 +24,7 @@ bool game_initialize(struct Game *g)
     return EXIT_FAILURE;
   }
 
-  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048))
+  if (Mix_OpenAudio(48000, AUDIO_S16, 2, 1024))
   {
     fprintf(stderr, "Error opening audio device: %s\n", SDL_GetError());
     return EXIT_FAILURE;

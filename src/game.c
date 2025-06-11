@@ -66,6 +66,8 @@ void game_free(struct Game **game)
     flakes_free(&g->flakes);
     player_free(&g->player);
 
+    Mix_HaltChannel(-1);
+
     Mix_FreeChunk(g->hit_sound);
     g->hit_sound = NULL;
 
