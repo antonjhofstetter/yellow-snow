@@ -3,6 +3,7 @@
 #include "load_media.h"
 #include "flakes.h"
 #include "player.h"
+#include "score.h"
 
 void check_collision(struct Game *g);
 void handle_collision(struct Game *g, struct Flake *f);
@@ -52,6 +53,11 @@ bool game_new(struct Game **game)
     }
   }
 
+  if (score_new(&g->score, g->renderer))
+  {
+    return EXIT_FAILURE;
+  }
+
   game_reset(g);
 
   return EXIT_SUCCESS;
@@ -63,6 +69,7 @@ void game_free(struct Game **game)
   {
     struct Game *g = *game;
 
+    score_free(&g->score);
     flakes_free(&g->flakes);
     player_free(&g->player);
 
@@ -139,6 +146,7 @@ void handle_collision(struct Game *g, struct Flake *f)
 
   if (f->is_white)
   {
+    score_increment(g->score);
     Mix_PlayChannel(-1, g->collect_sound, 0);
     flake_reset(f, false);
   }
@@ -153,6 +161,7 @@ void game_reset(struct Game *g)
 {
   player_reset(g->player);
   flakes_reset(g->flakes);
+  score_reset(g->score);
   g->playing = true;
 }
 
@@ -204,6 +213,7 @@ bool game_run(struct Game *g)
 
     player_draw(g->player);
     flakes_draw(g->flakes);
+    score_draw(g->score);
 
     SDL_RenderPresent(g->renderer);
 

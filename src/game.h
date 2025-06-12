@@ -21,6 +21,7 @@ struct Game
 
   struct Player *player;
   struct Flake *flakes;
+  struct Score *score;
 };
 
 bool game_new(struct Game **game);
