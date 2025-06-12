@@ -1,9 +1,6 @@
 #include "game.h"
 #include "initialize.h"
 #include "load_media.h"
-#include "flakes.h"
-#include "player.h"
-#include "score.h"
 
 void check_collision(struct Game *g);
 void handle_collision(struct Game *g, struct Flake *f);
@@ -34,8 +31,6 @@ bool game_new(struct Game **game)
   {
     return EXIT_FAILURE;
   }
-
-  player_reset(g->player);
 
   for (int i = 0; i < 5; i++)
   {
@@ -111,8 +106,6 @@ void game_free(struct Game **game)
     free(g);
     g = NULL;
     *game = NULL;
-
-    printf("all clean\n");
   }
 }
 

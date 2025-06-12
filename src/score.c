@@ -66,7 +66,34 @@ bool score_increment(struct Score *s)
 
 bool score_update(struct Score *s)
 {
-  (void)s;
+  if (s->image)
+  {
+    SDL_DestroyTexture(s->image);
+    s->image = NULL;
+  }
+
+  size_t size = (size_t)snprintf(NULL, 0, "Score: %d", s->score) + 1;
+  char score_string[size];
+  snprintf(score_string, size, "Score: %d", s->score);
+
+  SDL_Surface *surface = TTF_RenderText_Blended(s->font, score_string, s->color);
+  if (!surface)
+  {
+    fprintf(stderr, "Error creating score text surface: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
+  s->image = SDL_CreateTextureFromSurface(s->renderer, surface);
+  s->rect.w = surface->w;
+  s->rect.h = surface->h;
+
+  SDL_FreeSurface(surface);
+
+  if (!s->image)
+  {
+    fprintf(stderr, "Error creating score text Texture: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 }

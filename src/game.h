@@ -4,6 +4,7 @@
 #include "main.h"
 #include "player.h"
 #include "flakes.h"
+#include "score.h"
 
 struct Game
 {
