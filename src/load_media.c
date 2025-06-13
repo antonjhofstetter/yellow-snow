@@ -50,5 +50,12 @@ bool game_load_media(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  g->music = Mix_LoadMUS("assets/music/winter_loop.ogg");
+  if (!g->music)
+  {
+    fprintf(stderr, "Error loading Music: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
   return EXIT_SUCCESS;
 }

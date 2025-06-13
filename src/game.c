@@ -75,6 +75,10 @@ void game_free(struct Game **game)
     player_free(&g->player);
 
     Mix_HaltChannel(-1);
+    Mix_HaltMusic();
+
+    Mix_FreeMusic(g->music);
+    g->music = NULL;
 
     Mix_FreeChunk(g->hit_sound);
     g->hit_sound = NULL;
@@ -152,20 +156,30 @@ void handle_collision(struct Game *g, struct Flake *f)
   else
   {
     Mix_PlayChannel(-1, g->hit_sound, 0);
+    Mix_PauseMusic();
     g->playing = false;
   }
 }
 
 void game_reset(struct Game *g)
 {
-  player_reset(g->player);
   flakes_reset(g->flakes);
   score_reset(g->score);
+  Mix_ResumeMusic();
   g->playing = true;
 }
 
 bool game_run(struct Game *g)
 {
+  game_reset(g);
+  player_reset(g->player);
+
+  if (Mix_PlayMusic(g->music, -1))
+  {
+    fprintf(stderr, "Error playing Music: %s\n", SDL_GetError());
+    return EXIT_FAILURE;
+  }
+
   while (true)
   {
     while (SDL_PollEvent(&g->event))

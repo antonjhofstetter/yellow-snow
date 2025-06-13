@@ -19,6 +19,7 @@ struct Game
   SDL_Texture *white_image;
   Mix_Chunk *collect_sound;
   Mix_Chunk *hit_sound;
+  Mix_Music *music;
   bool playing;
   double delta_time;
 
