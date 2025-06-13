@@ -206,8 +206,8 @@ bool game_run(struct Game *g)
 
     if (g->playing)
     {
-      player_update(g->player);
-      flakes_update(g->flakes);
+      player_update(g->player, g->delta_time);
+      flakes_update(g->flakes, g->delta_time);
       check_collision(g);
     }
 
@@ -220,7 +220,7 @@ bool game_run(struct Game *g)
 
     SDL_RenderPresent(g->renderer);
 
-    fps_update(g->fps);
+    g->delta_time = fps_update(g->fps);
   }
 
   return EXIT_SUCCESS;

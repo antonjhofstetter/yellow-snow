@@ -11,8 +11,8 @@ bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image,
 
   new_flake->renderer = renderer;
   new_flake->image = image;
-  new_flake->speed = 5;
-  new_flake->ground = 514;
+  new_flake->speed = 300;
+  // new_flake->pos_y =
   new_flake->is_white = is_white;
 
   if (SDL_QueryTexture(new_flake->image, NULL, NULL, &new_flake->rect.w, &new_flake->rect.h))
@@ -44,17 +44,18 @@ void flakes_free(struct Flake **flakes)
   *flakes = NULL;
 }
 
-void flakes_update(struct Flake *f)
+void flakes_update(struct Flake *f, double dt)
 {
   while (f)
   {
-    if (f->rect.y > f->ground)
+    if (f->pos_y > 514.0)
     {
       flake_reset(f, false);
     }
     else
     {
-      f->rect.y += f->speed;
+      f->pos_y += f->speed * dt;
+      f->rect.y = (int)f->pos_y;
     }
 
     f = f->next;
@@ -81,9 +82,11 @@ void flakes_reset(struct Flake *f)
 
 void flake_reset(struct Flake *f, bool full)
 {
+  f->rect.x = rand() % WIN_W - f->rect.w;
+
   int height = full ? WIN_H * 2 : WIN_H;
   f->rect.y = -(rand() % height) - f->rect.h;
-  f->rect.x = rand() % WIN_W - f->rect.w;
+  f->pos_y = (double)f->rect.y;
 }
 
 int flake_left(struct Flake *f)

@@ -9,14 +9,14 @@ struct Flake
   SDL_Renderer *renderer;
   SDL_Texture *image;
   SDL_Rect rect;
-  int speed;
-  int ground;
   bool is_white;
+  double speed;
+  double pos_y;
 };
 
 bool flake_new(struct Flake **flake, SDL_Renderer *renderer, SDL_Texture *image, bool is_white);
 void flakes_free(struct Flake **flakes);
-void flakes_update(struct Flake *f);
+void flakes_update(struct Flake *f, double dt);
 void flakes_draw(struct Flake *f);
 void flakes_reset(struct Flake *f);
 void flake_reset(struct Flake *f, bool full);

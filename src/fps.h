@@ -9,7 +9,6 @@ struct Fps
   double target_delay;
   double cap_delay;
   double carry_delay;
-  double delta_time;
 
   Uint32 fps_last_time;
   Uint32 fps_counter;

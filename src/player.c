@@ -13,7 +13,7 @@ bool player_new(struct Player **player, SDL_Renderer *renderer, SDL_Texture *ima
   p->renderer = renderer;
   p->image = image;
   p->keystate = SDL_GetKeyboardState(NULL);
-  p->speed = 5;
+  p->speed = 300;
   p->top_offset = 20;
   p->left_offset = 45;
   p->right_offset = 45;
@@ -43,17 +43,19 @@ void player_reset(struct Player *p)
 {
   p->flip = SDL_FLIP_NONE;
   p->rect.x = (WIN_W - p->rect.w) / 2;
+  p->pos_x = (double)p->rect.x;
   p->rect.y = 377;
 }
 
-void player_update(struct Player *p)
+void player_update(struct Player *p, double dt)
 {
   if (p->keystate[SDL_SCANCODE_A])
   {
     if (player_left(p) >= 0)
     {
-      p->rect.x -= p->speed;
+      p->pos_x -= p->speed * dt;
     }
+
     p->flip = SDL_FLIP_HORIZONTAL;
   }
 
@@ -61,10 +63,13 @@ void player_update(struct Player *p)
   {
     if (player_right(p) <= WIN_W)
     {
-      p->rect.x += p->speed;
+      p->pos_x += p->speed * dt;
     }
+
     p->flip = SDL_FLIP_NONE;
   }
+
+  p->rect.x = (int)p->pos_x;
 }
 
 void player_draw(struct Player *p)
