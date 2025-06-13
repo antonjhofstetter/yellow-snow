@@ -53,6 +53,11 @@ bool game_new(struct Game **game)
     return EXIT_FAILURE;
   }
 
+  if (fps_new(&g->fps))
+  {
+    return EXIT_FAILURE;
+  }
+
   game_reset(g);
 
   return EXIT_SUCCESS;
@@ -64,6 +69,7 @@ void game_free(struct Game **game)
   {
     struct Game *g = *game;
 
+    fps_free(&g->fps);
     score_free(&g->score);
     flakes_free(&g->flakes);
     player_free(&g->player);
@@ -184,6 +190,10 @@ bool game_run(struct Game *g)
           }
           break;
 
+        case SDLK_f:
+          fps_toggle_display(g->fps);
+          break;
+
         default:
           break;
         }
@@ -210,7 +220,7 @@ bool game_run(struct Game *g)
 
     SDL_RenderPresent(g->renderer);
 
-    SDL_Delay(16);
+    fps_update(g->fps);
   }
 
   return EXIT_SUCCESS;
