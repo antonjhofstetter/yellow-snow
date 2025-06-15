@@ -165,8 +165,14 @@ void game_reset(struct Game *g)
 {
   flakes_reset(g->flakes);
   score_reset(g->score);
-  Mix_ResumeMusic();
+
   g->playing = true;
+  g->game_paused = false;
+
+  if (!g->music_paused)
+  {
+    Mix_ResumeMusic();
+  }
 }
 
 bool game_run(struct Game *g)
@@ -180,6 +186,8 @@ bool game_run(struct Game *g)
     return EXIT_FAILURE;
   }
 
+  // 1: game can be paused/unpaused with p key while game is running
+  // 2: music can be toggled
   while (true)
   {
     while (SDL_PollEvent(&g->event))
@@ -198,14 +206,26 @@ bool game_run(struct Game *g)
           break;
 
         case SDLK_SPACE:
-          if (!g->playing)
-          {
-            game_reset(g);
-          }
+          game_reset(g);
           break;
 
         case SDLK_f:
           fps_toggle_display(g->fps);
+          break;
+
+        case SDLK_p:
+          if (g->playing)
+          {
+            g->game_paused = !g->game_paused;
+          }
+          break;
+
+        case SDLK_m:
+          g->music_paused = !g->music_paused;
+          if (g->music_paused)
+          {
+            Mix_PauseMusic();
+          }
           break;
 
         default:
@@ -218,7 +238,7 @@ bool game_run(struct Game *g)
       }
     }
 
-    if (g->playing)
+    if (g->playing && !g->game_paused)
     {
       player_update(g->player, g->delta_time);
       flakes_update(g->flakes, g->delta_time);
@@ -226,8 +246,8 @@ bool game_run(struct Game *g)
     }
 
     SDL_RenderClear(g->renderer);
-    SDL_RenderCopy(g->renderer, g->background_image, NULL, &g->background_rect);
 
+    SDL_RenderCopy(g->renderer, g->background_image, NULL, &g->background_rect);
     player_draw(g->player);
     flakes_draw(g->flakes);
     score_draw(g->score);

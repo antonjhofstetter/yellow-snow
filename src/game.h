@@ -20,6 +20,8 @@ struct Game
   Mix_Chunk *collect_sound;
   Mix_Chunk *hit_sound;
   Mix_Music *music;
+  bool music_paused;
+  bool game_paused;
   bool playing;
   double delta_time;
 
