@@ -12,7 +12,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
-#define WIN_TITLE "Don't Eat the Yellow Snow!"
+#define WIN_TITLE "Yellow Snow!"
 #define WIN_ICON "assets/images/yellow.png"
 #define WIN_X SDL_WINDOWPOS_CENTERED
 #define WIN_Y SDL_WINDOWPOS_CENTERED

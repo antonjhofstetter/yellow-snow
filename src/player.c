@@ -24,6 +24,8 @@ bool player_new(struct Player **player, SDL_Renderer *renderer, SDL_Texture *ima
     return EXIT_FAILURE;
   }
 
+  player_reset(p);
+
   return EXIT_SUCCESS;
 }
 

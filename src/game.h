@@ -6,6 +6,7 @@
 #include "flakes.h"
 #include "score.h"
 #include "fps.h"
+#include "title.h"
 
 struct Game
 {
@@ -29,6 +30,7 @@ struct Game
   struct Flake *flakes;
   struct Score *score;
   struct Fps *fps;
+  struct Title *title;
 };
 
 bool game_new(struct Game **game);
